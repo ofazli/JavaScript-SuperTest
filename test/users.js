@@ -18,8 +18,8 @@ describe('Users ', () => {
     })
   })
   it('Get / users/:id', () => {
-    return request.get(`users/4252?access-token=${token}`).then((res) => {
-      expect(res.body.data.id).to.eq(4252)
+    return request.get(`users/4247?access-token=${token}`).then((res) => {
+      expect(res.body.data.id).to.eq(4247)
       expect(res.body.data.gender).to.eq('male')
     })
   })
@@ -33,5 +33,25 @@ describe('Users ', () => {
         expect(data.status).to.eq('active')
       })
     })
+  })
+  it.only('POST / users', () => {
+    const data = {
+      email: `test${Math.floor(Math.random() * 9999)}@test.com`,
+      name: 'testtestor',
+      gender: 'male',
+      status: 'inactive',
+    }
+    return request
+      .post('users')
+      .set('Authorization', `Bearer ${token}`)
+      .send(data)
+      .then((res) => {
+        console.log(res.body)
+        // expect(res.body.data.email).to.eq(data.email)
+        // expect(res.body.data.status).to.eq(data.status)
+        // expect(res.body.data.gender).to.eq(data.gender)
+        expect(res.body.data).to.deep.include(data)
+        //data const icinde bulunan tum degerleri assert etmek icin deep.include methodu kullaniliyor.
+      })
   })
 })
